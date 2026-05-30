@@ -1,0 +1,9 @@
+# Netlify settings for static resume builder
+[build]
+  publish = "."
+  command = ""
+
+[[redirects]]
+  from = "/advanced_resume_builder.html"
+  to = "/"
+  status = 301
