@@ -645,7 +645,7 @@ async function testSupabaseSave() {
       .from('resumes')
       .insert([
         {
-          id: 'test123',
+          id: crypto.randomUUID(),
           data: {
             message: 'Hello Supabase'
           }
