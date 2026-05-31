@@ -713,7 +713,7 @@ body.dark .entry-card-del:hover { background: rgba(239,68,68,0.18); }
   }
 }
 
-/* Mobile */
+/* Mobile for fixing in bottom right corner for expanding/collapsing button*/
 @media (max-width: 768px) {
     .sidebar-toggle-wrap {
         display: flex;
@@ -728,7 +728,7 @@ body.dark .entry-card-del:hover { background: rgba(239,68,68,0.18); }
     }
 }
 
-/* Mobile */
+/* Mobile for fixing in bottom right corner for expanding/collapsing button*/
 @media (max-width: 768px) {
     .sidebar-toggle-wrap.collapsed {
       left: 19px;
