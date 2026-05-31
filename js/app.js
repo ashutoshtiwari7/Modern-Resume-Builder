@@ -98,6 +98,7 @@ function toggleSidebar() {
   const wrap = $('sidebarToggleWrap');
   sidebar.classList.toggle('hidden');
   wrap.classList.toggle('collapsed');
+  const isMobile = window.innerWidth <= 768;
   if(isMobile){
     wrap.style = "display: flex;flex-direction: column-reverse;align-items: flex-end;left: 10px;right: 13px;top: auto;bottom: 16px;position: fixed;z-index: 70;"; //Setting the collapse button static bottom left.
   }
