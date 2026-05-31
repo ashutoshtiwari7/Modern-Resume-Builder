@@ -19,12 +19,12 @@ window.TEMPLATE_REGISTRY = [
   window.ResumeTemplates.t5_tech_modern,
   window.ResumeTemplates.t6_compact_fresher,
   window.ResumeTemplates.t7_corporate_grid,
-  window.ResumeTemplates.tr1_emily_classic,
-  window.ResumeTemplates.tr2_elena_ats,
-  window.ResumeTemplates.tr3_olivia_centered,
-  window.ResumeTemplates.tr4_jackson_photocenter,
   window.ResumeTemplates.tr5_elise_bold_left,
+  window.ResumeTemplates.tr3_olivia_centered,
+  window.ResumeTemplates.tr1_emily_classic,
   window.ResumeTemplates.tr6_alexander_minimal,
+  window.ResumeTemplates.tr2_elena_ats,
+  window.ResumeTemplates.tr4_jackson_photocenter,
   window.ResumeTemplates.tr7_brad_twocol,
 ];
 
