@@ -1,8 +1,8 @@
-const supabase = window.supabase.createClient(
+const supabaseClient  = window.supabase.createClient(
   'https://tntkkorwivkgckonzmtv.supabase.co',
   'sb_publishable_qMbPJfutfBTj9C7F8Yk1AQ_LSgjtyiD'
 );
-console.log('Supabase Connected', supabase);
+console.log('Supabase Connected', supabaseClient);
 
 /* ═══════════════════════════════════════════════════════════════
    RESUME BUILDER — Core Application State & Logic
