@@ -706,3 +706,30 @@ body.dark .entry-card-del:hover { background: rgba(239,68,68,0.18); }
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Mobile for fixing in bottom right corner for expanding/collapsing button*/
+@media (max-width: 768px) {
+    .sidebar-toggle-wrap {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: flex-end;
+        left: 10px;
+        right: 13px;
+        top: auto;
+        bottom: 16px;
+        position: fixed;
+        z-index: 70;
+    }
+}
+
+/* Mobile for fixing in bottom right corner for expanding/collapsing button*/
+@media (max-width: 768px) {
+    .sidebar-toggle-wrap.collapsed {
+      left: 19px;
+      right: 13px;
+      display: flex;
+      flex-direction: column-reverse;
+      flex-wrap: nowrap;
+      align-items: flex-end;
+    }
+}
