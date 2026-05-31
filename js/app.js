@@ -31,6 +31,8 @@ function collectData() {
       phone: val('phone'),
       email: val('email'),
       website: val('website'),
+      github: val('github'),
+      portfolio: val('portfolio'),
       summary: val('summary'),
       photoSrc: state.photo,
       photoSize: state.photoSize,
@@ -98,6 +100,68 @@ function toggleSidebar() {
   wrap.classList.toggle('collapsed');
 }
 
+let photoDrag = null;
+
+function clampPhotoOffset(n) {
+  return Math.min(80, Math.max(-80, Math.round(n)));
+}
+
+function syncPhotoThumbPreview() {
+  const img = $('photoThumb');
+  if (!img || !state.photo) return;
+  const zoom = (state.photoZoom || 100) / 100;
+  const ox = state.photoOffsetX || 0;
+  const oy = state.photoOffsetY || 0;
+  img.style.transform = `translate(${ox}px, ${oy}px) scale(${zoom})`;
+}
+
+function applyPhotoOffset(x, y, refreshResume = true) {
+  state.photoOffsetX = clampPhotoOffset(x);
+  state.photoOffsetY = clampPhotoOffset(y);
+  $('photoOffsetX').value = state.photoOffsetX;
+  $('photoOffsetY').value = state.photoOffsetY;
+  $('photoOffsetXVal').textContent = state.photoOffsetX;
+  $('photoOffsetYVal').textContent = state.photoOffsetY;
+  syncPhotoThumbPreview();
+  if (refreshResume) update();
+}
+
+function onPhotoDragMove(e) {
+  if (!photoDrag) return;
+  applyPhotoOffset(
+    photoDrag.ox + (e.clientX - photoDrag.startX),
+    photoDrag.oy + (e.clientY - photoDrag.startY),
+    false
+  );
+}
+
+function endPhotoDrag() {
+  if (photoDrag) update();
+  photoDrag = null;
+  $('photoThumbFrame')?.classList.remove('dragging');
+  document.removeEventListener('mousemove', onPhotoDragMove);
+  document.removeEventListener('mouseup', endPhotoDrag);
+}
+
+function initPhotoThumbDrag() {
+  const frame = $('photoThumbFrame');
+  if (!frame) return;
+
+  frame.addEventListener('mousedown', e => {
+    if (!state.photo) return;
+    e.preventDefault();
+    photoDrag = {
+      startX: e.clientX,
+      startY: e.clientY,
+      ox: state.photoOffsetX,
+      oy: state.photoOffsetY,
+    };
+    frame.classList.add('dragging');
+    document.addEventListener('mousemove', onPhotoDragMove);
+    document.addEventListener('mouseup', endPhotoDrag);
+  });
+}
+
 function handlePhoto(event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -116,6 +180,7 @@ function handlePhoto(event) {
     $('photoOffsetYVal').textContent = '0';
     $('photoBox').style.display = 'none';
     $('photoControls').style.display = 'block';
+    syncPhotoThumbPreview();
     update();
   };
   reader.readAsDataURL(file);
@@ -139,6 +204,7 @@ function updatePhotoSize() {
 function updatePhotoZoom() {
   state.photoZoom = parseInt($('photoZoom').value);
   $('photoZoomVal').textContent = state.photoZoom + '%';
+  syncPhotoThumbPreview();
   update();
 }
 
@@ -147,6 +213,7 @@ function updatePhotoOffset() {
   state.photoOffsetY = parseInt($('photoOffsetY').value);
   $('photoOffsetXVal').textContent = state.photoOffsetX;
   $('photoOffsetYVal').textContent = state.photoOffsetY;
+  syncPhotoThumbPreview();
   update();
 }
 
@@ -460,6 +527,7 @@ function initScrollableRanges() {
 
 window.addEventListener('DOMContentLoaded', () => {
   initScrollableRanges();
+  initPhotoThumbDrag();
   initDarkMode();
   initResponsive();
   addWork();

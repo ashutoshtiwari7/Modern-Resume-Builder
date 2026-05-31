@@ -71,7 +71,10 @@
           <span>Click to upload photo</span>
         </div>
         <div id="photoControls" style="display:none">
-          <img id="photoThumb" style="height:120px;object-fit:cover;border-radius:6px;margin-top:6px;width:100%" alt="Profile photo preview" />
+          <div id="photoThumbFrame" class="photo-thumb-frame" title="Drag to reposition photo">
+            <img id="photoThumb" class="photo-thumb-img" alt="Profile photo preview" />
+          </div>
+          <p class="photo-thumb-hint">Drag photo to adjust position (matches resume)</p>
           <div class="img-ctrl"><label>Size</label><input type="range" min="40" max="140" value="78" id="photoSize" oninput="updatePhotoSize()"><span id="photoSizeVal">78px</span></div>
           <div class="img-ctrl"><label>Zoom</label><input type="range" min="100" max="300" value="100" id="photoZoom" oninput="updatePhotoZoom()"><span id="photoZoomVal">100%</span></div>
           <div class="img-ctrl"><label>Left/Right</label><input type="range" min="-80" max="80" value="0" id="photoOffsetX" oninput="updatePhotoOffset()"><span id="photoOffsetXVal">0</span></div>
@@ -103,6 +106,14 @@
         <div class="fg">
           <label>LinkedIn / Website</label>
           <input id="website" placeholder="linkedin.com/in/yourname" oninput="update()" />
+        </div>
+        <div class="fg">
+          <label>GitHub</label>
+          <input id="github" placeholder="github.com/yourname" oninput="update()" />
+        </div>
+        <div class="fg">
+          <label>Portfolio</label>
+          <input id="portfolio" placeholder="yourportfolio.com" oninput="update()" />
         </div>
         <div class="fg">
           <label>Summary</label>
@@ -186,6 +197,13 @@
 <script src="templates/t5_tech_modern.js"></script>
 <script src="templates/t6_compact_fresher.js"></script>
 <script src="templates/t7_corporate_grid.js"></script>
+<script src="templates/tr1_emily_classic.js"></script>
+<script src="templates/tr2_elena_ats.js"></script>
+<script src="templates/tr3_olivia_centered.js"></script>
+<script src="templates/tr4_jackson_photocenter.js"></script>
+<script src="templates/tr5_elise_bold_left.js"></script>
+<script src="templates/tr6_alexander_minimal.js"></script>
+<script src="templates/tr7_brad_twocol.js"></script>
 <script src="templates/index.js"></script>
 <script src="js/app.js"></script>
 </body>

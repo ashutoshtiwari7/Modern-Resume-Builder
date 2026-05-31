@@ -19,12 +19,12 @@ window.ResumeTemplates.t4_elegant_timeline = {
     const initials = ((profile.firstName || 'A')[0] + (profile.lastName || 'C')[0]).toUpperCase();
 
     const photoSize = window.ResumeHelpers.photoSize(profile);
-    const photoHTML = window.ResumeHelpers.photoContent(profile, initials, 'font-size:22px;font-weight:700;color:#fff');
+    const photoHTML = window.ResumeHelpers.photoContent(profile, initials, 'font-size:38px;font-weight:700;color:#fff');
 
     const sHead = (title) => `
       <div style="display:flex;align-items:center;gap:10px;margin:16px 0 10px">
         <div style="height:1px;flex:1;background:#e2d8cc"></div>
-        <span style="font-size:9px;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:2px">${title}</span>
+        <span style="font-size:14px;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:2px">${title}</span>
         <div style="height:1px;flex:1;background:#e2d8cc"></div>
       </div>`;
 
@@ -36,22 +36,22 @@ window.ResumeTemplates.t4_elegant_timeline = {
         </div>
         <div style="flex:1;padding-bottom:8px">
           <div style="display:flex;justify-content:space-between">
-            <div style="font-weight:700;font-size:9.5px;color:#2d2d2d">${w.role||''}</div>
-            <div style="font-size:7.5px;color:#999;white-space:nowrap">${[w.from,w.to].filter(Boolean).join(' – ')}</div>
+            <div style="font-weight:700;font-size:14px;color:#2d2d2d">${w.role||''}</div>
+            <div style="font-size:12px;color:#999;white-space:nowrap">${[w.from,w.to].filter(Boolean).join(' – ')}</div>
           </div>
-          <div style="font-size:8.5px;color:${accent};font-style:italic;margin-bottom:3px">${w.company||''}</div>
-          ${w.desc?`<div style="font-size:8px;color:#555;line-height:1.6">${w.desc.replace(/\n/g,'<br>')}</div>`:''}
+          <div style="font-size:13px;color:${accent};font-style:italic;margin-bottom:3px">${w.company||''}</div>
+          ${w.desc?`<div style="font-size:13px;color:#555;line-height:1.6">${w.desc.replace(/\n/g,'<br>')}</div>`:''}
         </div>
       </div>`).join('');
 
     const eduHTML = edu.map(e => `
       <div style="display:flex;gap:10px;margin-bottom:10px">
-        <div style="min-width:55px;text-align:right;font-size:7.5px;color:#999;line-height:1.4;padding-top:2px">${[e.from,e.to].filter(Boolean).join('<br>')}</div>
+        <div style="min-width:55px;text-align:right;font-size:12px;color:#999;line-height:1.4;padding-top:2px">${[e.from,e.to].filter(Boolean).join('<br>')}</div>
         <div style="width:1.5px;background:#e2d8cc;flex-shrink:0"></div>
         <div>
-          <div style="font-weight:700;font-size:9px;color:#2d2d2d">${e.degree||''}</div>
-          <div style="font-size:8.5px;color:${accent};font-style:italic">${e.school||''}</div>
-          ${e.gpa?`<div style="font-size:7.5px;color:#999">GPA: ${e.gpa}</div>`:''}
+          <div style="font-weight:700;font-size:14px;color:#2d2d2d">${e.degree||''}</div>
+          <div style="font-size:13px;color:${accent};font-style:italic">${e.school||''}</div>
+          ${e.gpa?`<div style="font-size:12px;color:#999">GPA: ${e.gpa}</div>`:''}
         </div>
       </div>`).join('');
 
@@ -59,7 +59,7 @@ window.ResumeTemplates.t4_elegant_timeline = {
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px 12px">
         ${skills.map(s=>`
           <div>
-            <div style="display:flex;justify-content:space-between;font-size:8px;color:#444;margin-bottom:2px">
+            <div style="display:flex;justify-content:space-between;font-size:13px;color:#444;margin-bottom:2px">
               <span>${s.name}</span><span style="color:#999">${s.level}%</span>
             </div>
             <div style="background:#ede7df;border-radius:10px;height:3px">
@@ -70,7 +70,7 @@ window.ResumeTemplates.t4_elegant_timeline = {
 
     const customHTML = (customSections||[]).map(sec => `
       ${sHead(sec.title)}
-      ${sec.items.map(it=>`<div style="margin-bottom:8px"><div style="font-weight:700;font-size:9px;color:#2d2d2d">${it.title||''}</div>${it.subtitle?`<div style="font-size:8px;color:${accent};font-style:italic">${it.subtitle}</div>`:''}<div style="font-size:7.5px;color:#999">${it.date||''}</div>${it.desc?`<div style="font-size:8px;color:#555;line-height:1.5">${it.desc.replace(/\n/g,'<br>')}</div>`:''}</div>`).join('')}
+      ${sec.items.map(it=>`<div class="resume-block" style="margin-bottom:8px"><div style="font-weight:700;font-size:14px;color:#2d2d2d">${it.title||''}</div>${it.subtitle?`<div style="font-size:13px;color:${accent};font-style:italic">${it.subtitle}</div>`:''}<div style="font-size:12px;color:#999">${it.date||''}</div>${it.desc?`<div style="font-size:13px;color:#555;line-height:1.5">${it.desc.replace(/\n/g,'<br>')}</div>`:''}</div>`).join('')}
     `).join('');
 
     const personalInfo = Object.entries({'Father':personal.father,'DOB':personal.dob,'Gender':personal.gender,'Languages':personal.lang,'Marital Status':personal.marital,'Nationality':personal.nation}).filter(([,v])=>v);
@@ -84,16 +84,16 @@ window.ResumeTemplates.t4_elegant_timeline = {
               ${photoHTML}
             </div>
           </div>
-          <div style="font-size:24px;font-weight:300;color:#1a1a1a;letter-spacing:3px;text-transform:uppercase">${profile.firstName||''} <strong style="font-weight:800">${profile.lastName||''}</strong></div>
-          ${profile.tagline?`<div style="font-size:9px;color:${accent};text-transform:uppercase;letter-spacing:2px;margin-top:5px">${profile.tagline}</div>`:''}
+          <div style="font-size:42px;font-weight:300;color:#1a1a1a;letter-spacing:3px;text-transform:uppercase">${profile.firstName||''} <strong style="font-weight:800">${profile.lastName||''}</strong></div>
+          ${profile.tagline?`<div style="font-size:14px;color:${accent};text-transform:uppercase;letter-spacing:2px;margin-top:5px">${profile.tagline}</div>`:''}
           <div style="display:flex;justify-content:center;gap:16px;margin-top:8px;flex-wrap:wrap">
-            ${profile.phone?`<span style="font-size:8px;color:#888">📞 ${profile.phone}</span>`:''}
-            ${profile.email?`<span style="font-size:8px;color:#888">✉ ${profile.email}</span>`:''}
-            ${profile.website?`<span style="font-size:8px;color:#888">🔗 ${profile.website}</span>`:''}
+            ${profile.phone?`<span style="font-size:13px;color:#888">📞 ${profile.phone}</span>`:''}
+            ${profile.email?`<span style="font-size:13px;color:#888">✉ ${profile.email}</span>`:''}
+            ${window.ResumeHelpers.contactSpans(profile, 'font-size:13px;color:#888', false)}
           </div>
         </div>
 
-        ${profile.summary?`${sHead('About Me')}<div style="font-size:8.5px;color:#555;line-height:1.7;text-align:center;font-style:italic">${profile.summary}</div>`:''}
+        ${profile.summary?`${sHead('About Me')}<div style="font-size:13px;color:#555;line-height:1.7;text-align:center;font-style:italic">${profile.summary}</div>`:''}
         ${work.length?`${sHead('Work Experience')}${workHTML}`:''}
         ${edu.length?`${sHead('Education')}${eduHTML}`:''}
         ${skillsHTML?`${sHead('Skills')}${skillsHTML}`:''}
@@ -102,16 +102,16 @@ window.ResumeTemplates.t4_elegant_timeline = {
         ${personalInfo.length?`
           ${sHead('Personal Information')}
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px 12px">
-            ${personalInfo.map(([k,v])=>`<div style="font-size:8px;color:#555;text-align:center"><div style="font-size:7px;color:#aaa;text-transform:uppercase;letter-spacing:1px">${k}</div>${v}</div>`).join('')}
+            ${personalInfo.map(([k,v])=>`<div style="font-size:13px;color:#555;text-align:center"><div style="font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:1px">${k}</div>${v}</div>`).join('')}
           </div>
         `:''}
 
-        ${hobbies.length?`${sHead('Hobbies')}<div style="display:flex;justify-content:center;flex-wrap:wrap;gap:5px">${hobbies.map(h=>`<span style="border:1px solid #e2d8cc;color:#777;padding:2px 9px;border-radius:10px;font-size:7.5px">${h}</span>`).join('')}</div>`:''}
+        ${hobbies.length?`${sHead('Hobbies')}<div style="display:flex;justify-content:center;flex-wrap:wrap;gap:5px">${hobbies.map(h=>`<span style="border:1px solid #e2d8cc;color:#777;padding:2px 9px;border-radius:10px;font-size:12px">${h}</span>`).join('')}</div>`:''}
 
         ${personal.decl?`
           ${sHead('Declaration')}
-          <div style="font-size:8px;color:#666;line-height:1.7;text-align:center">${personal.decl}</div>
-          <div style="font-size:7.5px;color:#aaa;text-align:center;margin-top:5px">Date: ___________ &nbsp;&nbsp; Place: ___________</div>
+          <div style="font-size:13px;color:#666;line-height:1.7;text-align:center">${personal.decl}</div>
+          <div style="font-size:12px;color:#aaa;text-align:center;margin-top:5px">Date: ___________ &nbsp;&nbsp; Place: ___________</div>
         `:''}
       </div>`;
   }
