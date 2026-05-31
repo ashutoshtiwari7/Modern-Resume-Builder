@@ -535,6 +535,7 @@ function initScrollableRanges() {
 window.addEventListener('DOMContentLoaded', () => {
   initScrollableRanges();
   initPhotoThumbDrag();
+  testSupabaseSave(); //supabase test function.
   initPhotoTouch();
   initDarkMode();
   initResponsive();
@@ -635,4 +636,22 @@ function initPhotoTouch() {
   frame.addEventListener('touchend', () => {
     update();
   });
+}
+
+async function testSupabaseSave() {
+
+  const { data, error } =
+    await supabaseClient
+      .from('resumes')
+      .insert([
+        {
+          id: 'test123',
+          data: {
+            message: 'Hello Supabase'
+          }
+        }
+      ]);
+
+  console.log('DATA:', data);
+  console.log('ERROR:', error);
 }
