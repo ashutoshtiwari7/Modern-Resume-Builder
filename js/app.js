@@ -180,6 +180,7 @@ function handlePhoto(event) {
     $('photoOffsetYVal').textContent = '0';
     $('photoBox').style.display = 'none';
     $('photoControls').style.display = 'block';
+    $('photoBox').style.width = '14vh';
     syncPhotoThumbPreview();
     update();
   };
@@ -528,6 +529,7 @@ function initScrollableRanges() {
 window.addEventListener('DOMContentLoaded', () => {
   initScrollableRanges();
   initPhotoThumbDrag();
+  initPhotoTouch();
   initDarkMode();
   initResponsive();
   addWork();
@@ -557,3 +559,74 @@ window.addEventListener('DOMContentLoaded', () => {
     fitResumePreview();
   }, 50);
 });
+
+/* Added functionality to pich zoom and move image by finger on smart phones */
+function initPhotoTouch() {
+  const frame = $('photoThumbFrame');
+
+  if (!frame) return;
+  let startX = 0;
+  let startY = 0;
+
+  let startOffsetX = 0;
+  let startOffsetY = 0;
+
+  let startZoom = 100;
+  let startDistance = 0;
+
+  function getDistance(t1, t2) {
+    return Math.hypot(
+      t2.clientX - t1.clientX,
+      t2.clientY - t1.clientY
+    );
+  }
+
+  frame.addEventListener('touchstart', (e) => {
+    if (!state.photo) return;
+    if (e.touches.length === 1) {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      startOffsetX = state.photoOffsetX;
+      startOffsetY = state.photoOffsetY;
+    }
+    if (e.touches.length === 2) {
+      startDistance = getDistance(
+        e.touches[0],
+        e.touches[1]
+      );
+      startZoom = state.photoZoom;
+    }
+  }, { passive: false });
+  frame.addEventListener('touchmove', (e) => {
+    if (!state.photo) return;
+    e.preventDefault();
+    if (e.touches.length === 1) {
+      applyPhotoOffset(
+        startOffsetX + (e.touches[0].clientX - startX),
+        startOffsetY + (e.touches[0].clientY - startY),
+        false
+      );
+    }
+    if (e.touches.length === 2) {
+      const currentDistance = getDistance(
+        e.touches[0],
+        e.touches[1]
+      );
+      state.photoZoom =
+        startZoom *
+        (currentDistance / startDistance);
+      state.photoZoom = Math.max(
+        50,
+        Math.min(300, state.photoZoom)
+      );
+      $('photoZoom').value = Math.round(state.photoZoom);
+      $('photoZoomVal').textContent =
+        Math.round(state.photoZoom) + '%';
+      syncPhotoThumbPreview();
+    }
+
+  }, { passive: false });
+  frame.addEventListener('touchend', () => {
+    update();
+  });
+}

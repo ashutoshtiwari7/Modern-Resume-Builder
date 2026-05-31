@@ -337,6 +337,7 @@ body.dark .entry-card-del:hover { background: rgba(239,68,68,0.18); }
 .presetSection { font-size: 11px; color: var(--text-muted); line-height: 1.55; margin-bottom: 8px; }
 
 .photo-box {
+  width: fit-content;
   border: 2px dashed var(--border);
   border-radius: var(--radius);
   padding: 20px;
@@ -360,7 +361,7 @@ body.dark .entry-card-del:hover { background: rgba(239,68,68,0.18); }
 
 .photo-thumb-frame {
   position: relative;
-  width: 100%;
+  width: 43%;
   height: 120px;
   margin-top: 6px;
   border-radius: 6px;
@@ -674,6 +675,11 @@ body.dark .entry-card-del:hover { background: rgba(239,68,68,0.18); }
     padding: 12px 8px 72px;
   }
 
+  .photo-thumb-frame,
+.photo-thumb-img {
+  touch-action: none;
+}
+
   .etab { min-width: 52px; font-size: 11px; padding: 8px 5px; }
   .epane { padding: 12px 14px; }
 
@@ -707,7 +713,7 @@ body.dark .entry-card-del:hover { background: rgba(239,68,68,0.18); }
   }
 }
 
-/* Mobile for fixing in bottom right corner for expanding/collapsing button*/
+/* Mobile */
 @media (max-width: 768px) {
     .sidebar-toggle-wrap {
         display: flex;
@@ -722,7 +728,7 @@ body.dark .entry-card-del:hover { background: rgba(239,68,68,0.18); }
     }
 }
 
-/* Mobile for fixing in bottom right corner for expanding/collapsing button*/
+/* Mobile */
 @media (max-width: 768px) {
     .sidebar-toggle-wrap.collapsed {
       left: 19px;
