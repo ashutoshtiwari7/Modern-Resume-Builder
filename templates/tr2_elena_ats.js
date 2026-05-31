@@ -1,5 +1,5 @@
 /**
- * Template: Elena ATS (tr2_elena_ats)
+ * Template: Ayush ATS (tr2_elena_ats)
  * Reference: Image 2 — Elena R. Whitaker, Academic Program Coordinator
  * Layout: Name | Title as big header, city/phone/email row, full-width underline section heads,
  *         edu-first layout, bullet point lists, ATS-optimized clean white.
@@ -9,7 +9,7 @@ window.ResumeTemplates = window.ResumeTemplates || {};
 
 window.ResumeTemplates.tr2_elena_ats = {
   id: 'tr2_elena_ats',
-  name: 'Elena ATS',
+  name: 'Ayush ATS',
   tag: 'ATS Clean',
   thumb_bg: '#0d5c6e',
   thumb_accent: '#ffffff',

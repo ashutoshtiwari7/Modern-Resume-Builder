@@ -1,5 +1,5 @@
 /**
- * Template: Elise Bold Left (tr5_elise_bold_left)
+ * Template: Shushila Bold Left (tr5_elise_bold_left)
  * Reference: Image 5 — Elise Carter, General Manager
  * Layout: Giant bold ALL-CAPS name top-left, teal underlined tagline, icon contact row,
  *         bold uppercase section headers with underline, 2x2 key achievements grid with dotted borders,
@@ -10,7 +10,7 @@ window.ResumeTemplates = window.ResumeTemplates || {};
 
 window.ResumeTemplates.tr5_elise_bold_left = {
   id: 'tr5_elise_bold_left',
-  name: 'Elise Bold Left',
+  name: 'Shushila Bold Left',
   tag: 'Leadership',
   thumb_bg: '#f8f9fa',
   thumb_accent: '#1a6b8a',

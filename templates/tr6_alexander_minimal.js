@@ -1,5 +1,5 @@
 /**
- * Template: Alexander Minimal (tr6_alexander_minimal)
+ * Template: Ashutosh Minimal (tr6_alexander_minimal)
  * Reference: Image 6 — Alexander Taylor, Senior Software Engineer
  * Layout: Centered plain name (no accent color), grey tagline below, small centered contact,
  *         centered section title with full-width underline, company name plain-left + location-right,
@@ -11,7 +11,7 @@ window.ResumeTemplates = window.ResumeTemplates || {};
 
 window.ResumeTemplates.tr6_alexander_minimal = {
   id: 'tr6_alexander_minimal',
-  name: 'Alexander Minimal',
+  name: 'Ashutosh Minimal',
   tag: 'Engineer',
   thumb_bg: '#f5f5f5',
   thumb_accent: '#333333',

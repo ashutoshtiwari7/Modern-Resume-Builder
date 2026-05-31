@@ -1,5 +1,5 @@
 /**
- * Template: Emily Classic (tr1_emily_classic)
+ * Template: Anvesha Classic (tr1_emily_classic)
  * Reference: Image 1 — Emily Carter, Assistant Store Manager
  * Layout: Photo top-left + name/title, vertical divider, contact right,
  *         then single-column body with bold section headers + bullet-point work entries,
@@ -10,7 +10,7 @@ window.ResumeTemplates = window.ResumeTemplates || {};
 
 window.ResumeTemplates.tr1_emily_classic = {
   id: 'tr1_emily_classic',
-  name: 'Emily Classic',
+  name: 'Anvesha Classic',
   tag: 'Professional',
   thumb_bg: '#1a3a5c',
   thumb_accent: '#f0a500',

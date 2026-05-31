@@ -1,5 +1,5 @@
 /**
- * Template: Olivia Centered (tr3_olivia_centered)
+ * Template: Purnima Centered (tr3_olivia_centered)
  * Reference: Image 3 — Olivia Davis, Senior Business Analyst
  * Layout: Centered name + teal tagline + contact dots, centered section headers with full-width rules,
  *         company name with location-right dates, bullet lists, 3-col key achievements boxes,
@@ -10,7 +10,7 @@ window.ResumeTemplates = window.ResumeTemplates || {};
 
 window.ResumeTemplates.tr3_olivia_centered = {
   id: 'tr3_olivia_centered',
-  name: 'Olivia Centered',
+  name: 'Purnima Centered',
   tag: 'Business',
   thumb_bg: '#ffffff',
   thumb_accent: '#1a6b7a',
