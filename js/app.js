@@ -1,3 +1,9 @@
+const supabase = window.supabase.createClient(
+  'https://tntkkorwivkgckonzmtv.supabase.co',
+  'sb_publishable_qMbPJfutfBTj9C7F8Yk1AQ_LSgjtyiD'
+);
+console.log('Supabase Connected', supabase);
+
 /* ═══════════════════════════════════════════════════════════════
    RESUME BUILDER — Core Application State & Logic
    ═══════════════════════════════════════════════════════════════ */
