@@ -1,17 +1,17 @@
-const supabaseClient  = window.supabase.createClient(
-  'https://tntkkorwivkgckonzmtv.supabase.co',
-  'sb_publishable_qMbPJfutfBTj9C7F8Yk1AQ_LSgjtyiD'
+const supabaseClient = window.supabase.createClient(
+  "https://tntkkorwivkgckonzmtv.supabase.co",
+  "sb_publishable_qMbPJfutfBTj9C7F8Yk1AQ_LSgjtyiD",
 );
-console.log('Supabase Connected', supabaseClient);
+console.log("Supabase Connected", supabaseClient);
 
 /* ═══════════════════════════════════════════════════════════════
    RESUME BUILDER — Core Application State & Logic
    ═══════════════════════════════════════════════════════════════ */
 
 let state = {
-  activeTemplate: 't1_classic_sidebar',
-  accentColor: '#5ba4cf',
-  font: 'Poppins',
+  activeTemplate: "t1_classic_sidebar",
+  accentColor: "#5ba4cf",
+  font: "Poppins",
   photo: null,
   photoSize: 78,
   photoZoom: 100,
@@ -24,22 +24,27 @@ let state = {
   customSections: [],
 };
 
-const uid = () => '_' + Math.random().toString(36).substr(2, 8);
-const $ = id => document.getElementById(id);
-const val = id => ($(id) || {}).value || '';
+const uid = () => "_" + Math.random().toString(36).substr(2, 8);
+const $ = (id) => document.getElementById(id);
+const val = (id) => ($(id) || {}).value || "";
+
+// Supabase resume persistence
+let currentResumeId = null; // maps to table column `id` (uuid)
+let isApplyingRemoteData = false;
+let autosaveTimer = null;
 
 function collectData() {
   return {
     profile: {
-      firstName: val('fn'),
-      lastName: val('ln'),
-      tagline: val('tagline'),
-      phone: val('phone'),
-      email: val('email'),
-      website: val('website'),
-      github: val('github'),
-      portfolio: val('portfolio'),
-      summary: val('summary'),
+      firstName: val("fn"),
+      lastName: val("ln"),
+      tagline: val("tagline"),
+      phone: val("phone"),
+      email: val("email"),
+      website: val("website"),
+      github: val("github"),
+      portfolio: val("portfolio"),
+      summary: val("summary"),
       photoSrc: state.photo,
       photoSize: state.photoSize,
       photoZoom: state.photoZoom,
@@ -51,13 +56,13 @@ function collectData() {
     skills: state.skills,
     hobbies: state.hobbies,
     personal: {
-      father: val('father'),
-      dob: val('dob'),
-      gender: val('gender'),
-      lang: val('lang'),
-      marital: val('marital'),
-      nation: val('nation'),
-      decl: val('decl'),
+      father: val("father"),
+      dob: val("dob"),
+      gender: val("gender"),
+      lang: val("lang"),
+      marital: val("marital"),
+      nation: val("nation"),
+      decl: val("decl"),
     },
     customSections: state.customSections,
   };
@@ -67,43 +72,43 @@ function update() {
   if (!window.getTemplate) return;
   const tpl = window.getTemplate(state.activeTemplate);
   const data = collectData();
-  const el = $('resumeEl');
-  el.style.fontFamily = state.font + ', sans-serif';
+  const el = $("resumeEl");
+  el.style.fontFamily = state.font + ", sans-serif";
   el.innerHTML = tpl.render(data, state.accentColor);
   requestAnimationFrame(fitResumePreview);
 }
 
 function etab(name, btn) {
-  document.querySelectorAll('.etab').forEach(b => b.classList.remove('on'));
-  document.querySelectorAll('.epane').forEach(p => p.classList.remove('on'));
-  btn.classList.add('on');
-  $('ep-' + name).classList.add('on');
+  document.querySelectorAll(".etab").forEach((b) => b.classList.remove("on"));
+  document.querySelectorAll(".epane").forEach((p) => p.classList.remove("on"));
+  btn.classList.add("on");
+  $("ep-" + name).classList.add("on");
 }
 
 function changeFont(f) {
   state.font = f;
-  document.documentElement.style.setProperty('--font', `'${f}', sans-serif`);
+  document.documentElement.style.setProperty("--font", `'${f}', sans-serif`);
   update();
 }
 
 function changeAccent(c) {
   state.accentColor = c;
-  document.documentElement.style.setProperty('--accent', c);
+  document.documentElement.style.setProperty("--accent", c);
   update();
 }
 
 function toggleDark() {
-  document.body.classList.toggle('dark');
-  const isDark = document.body.classList.contains('dark');
-  $('darkModeIcon').className = isDark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
-  $('darkModeText').textContent = isDark ? 'Light mode' : 'Dark mode';
+  document.body.classList.toggle("dark");
+  const isDark = document.body.classList.contains("dark");
+  $("darkModeIcon").className = isDark ? "fa-solid fa-moon" : "fa-solid fa-sun";
+  $("darkModeText").textContent = isDark ? "Light mode" : "Dark mode";
 }
 
 function toggleSidebar() {
-  const sidebar = $('editorSidebar');
-  const wrap = $('sidebarToggleWrap');
-  sidebar.classList.toggle('hidden');
-  wrap.classList.toggle('collapsed');
+  const sidebar = $("editorSidebar");
+  const wrap = $("sidebarToggleWrap");
+  sidebar.classList.toggle("hidden");
+  wrap.classList.toggle("collapsed");
 }
 
 let photoDrag = null;
@@ -113,7 +118,7 @@ function clampPhotoOffset(n) {
 }
 
 function syncPhotoThumbPreview() {
-  const img = $('photoThumb');
+  const img = $("photoThumb");
   if (!img || !state.photo) return;
   const zoom = (state.photoZoom || 100) / 100;
   const ox = state.photoOffsetX || 0;
@@ -124,10 +129,10 @@ function syncPhotoThumbPreview() {
 function applyPhotoOffset(x, y, refreshResume = true) {
   state.photoOffsetX = clampPhotoOffset(x);
   state.photoOffsetY = clampPhotoOffset(y);
-  $('photoOffsetX').value = state.photoOffsetX;
-  $('photoOffsetY').value = state.photoOffsetY;
-  $('photoOffsetXVal').textContent = state.photoOffsetX;
-  $('photoOffsetYVal').textContent = state.photoOffsetY;
+  $("photoOffsetX").value = state.photoOffsetX;
+  $("photoOffsetY").value = state.photoOffsetY;
+  $("photoOffsetXVal").textContent = state.photoOffsetX;
+  $("photoOffsetYVal").textContent = state.photoOffsetY;
   syncPhotoThumbPreview();
   if (refreshResume) update();
 }
@@ -137,23 +142,23 @@ function onPhotoDragMove(e) {
   applyPhotoOffset(
     photoDrag.ox + (e.clientX - photoDrag.startX),
     photoDrag.oy + (e.clientY - photoDrag.startY),
-    false
+    false,
   );
 }
 
 function endPhotoDrag() {
   if (photoDrag) update();
   photoDrag = null;
-  $('photoThumbFrame')?.classList.remove('dragging');
-  document.removeEventListener('mousemove', onPhotoDragMove);
-  document.removeEventListener('mouseup', endPhotoDrag);
+  $("photoThumbFrame")?.classList.remove("dragging");
+  document.removeEventListener("mousemove", onPhotoDragMove);
+  document.removeEventListener("mouseup", endPhotoDrag);
 }
 
 function initPhotoThumbDrag() {
-  const frame = $('photoThumbFrame');
+  const frame = $("photoThumbFrame");
   if (!frame) return;
 
-  frame.addEventListener('mousedown', e => {
+  frame.addEventListener("mousedown", (e) => {
     if (!state.photo) return;
     e.preventDefault();
     photoDrag = {
@@ -162,9 +167,9 @@ function initPhotoThumbDrag() {
       ox: state.photoOffsetX,
       oy: state.photoOffsetY,
     };
-    frame.classList.add('dragging');
-    document.addEventListener('mousemove', onPhotoDragMove);
-    document.addEventListener('mouseup', endPhotoDrag);
+    frame.classList.add("dragging");
+    document.addEventListener("mousemove", onPhotoDragMove);
+    document.addEventListener("mouseup", endPhotoDrag);
   });
 }
 
@@ -172,21 +177,21 @@ function handlePhoto(event) {
   const file = event.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = e => {
+  reader.onload = (e) => {
     state.photo = e.target.result;
     state.photoZoom = 100;
     state.photoOffsetX = 0;
     state.photoOffsetY = 0;
-    $('photoThumb').src = e.target.result;
-    $('photoZoom').value = 100;
-    $('photoZoomVal').textContent = '100%';
-    $('photoOffsetX').value = 0;
-    $('photoOffsetXVal').textContent = '0';
-    $('photoOffsetY').value = 0;
-    $('photoOffsetYVal').textContent = '0';
-    $('photoBox').style.display = 'none';
-    $('photoControls').style.display = 'block';
-    $('photoBox').style.width = '14vh';
+    $("photoThumb").src = e.target.result;
+    $("photoZoom").value = 100;
+    $("photoZoomVal").textContent = "100%";
+    $("photoOffsetX").value = 0;
+    $("photoOffsetXVal").textContent = "0";
+    $("photoOffsetY").value = 0;
+    $("photoOffsetYVal").textContent = "0";
+    $("photoBox").style.display = "none";
+    $("photoControls").style.display = "block";
+    $("photoBox").style.width = "14vh";
     syncPhotoThumbPreview();
     update();
   };
@@ -195,31 +200,31 @@ function handlePhoto(event) {
 
 function removePhoto() {
   state.photo = null;
-  $('photoInput').value = '';
-  $('photoThumb').src = '';
-  $('photoBox').style.display = 'flex';
-  $('photoControls').style.display = 'none';
+  $("photoInput").value = "";
+  $("photoThumb").src = "";
+  $("photoBox").style.display = "flex";
+  $("photoControls").style.display = "none";
   update();
 }
 
 function updatePhotoSize() {
-  state.photoSize = parseInt($('photoSize').value);
-  $('photoSizeVal').textContent = state.photoSize + 'px';
+  state.photoSize = parseInt($("photoSize").value);
+  $("photoSizeVal").textContent = state.photoSize + "px";
   update();
 }
 
 function updatePhotoZoom() {
-  state.photoZoom = parseInt($('photoZoom').value);
-  $('photoZoomVal').textContent = state.photoZoom + '%';
+  state.photoZoom = parseInt($("photoZoom").value);
+  $("photoZoomVal").textContent = state.photoZoom + "%";
   syncPhotoThumbPreview();
   update();
 }
 
 function updatePhotoOffset() {
-  state.photoOffsetX = parseInt($('photoOffsetX').value);
-  state.photoOffsetY = parseInt($('photoOffsetY').value);
-  $('photoOffsetXVal').textContent = state.photoOffsetX;
-  $('photoOffsetYVal').textContent = state.photoOffsetY;
+  state.photoOffsetX = parseInt($("photoOffsetX").value);
+  state.photoOffsetY = parseInt($("photoOffsetY").value);
+  $("photoOffsetXVal").textContent = state.photoOffsetX;
+  $("photoOffsetYVal").textContent = state.photoOffsetY;
   syncPhotoThumbPreview();
   update();
 }
@@ -231,7 +236,7 @@ function updateCardTitle(input, fallback) {
 
 function addWork() {
   const id = uid();
-  state.work.push({ id, role: '', company: '', from: '', to: '', desc: '' });
+  state.work.push({ id, role: "", company: "", from: "", to: "", desc: "" });
   renderWorkEditor();
   update();
 }
@@ -246,7 +251,7 @@ function renderWorkEditor() {
   $('work-editor').innerHTML = state.work.map((w, i) => `
     <div class="entry-card">
       <div class="entry-card-head">
-        <span class="entry-card-title">${w.role || 'Experience ' + (i + 1)}</span>
+        <span class="entry-card-title">${w.role || "Experience " + (i + 1)}</span>
         <button class="entry-card-del" onclick="removeWork('${w.id}')"><i class="ti ti-trash"></i></button>
       </div>
       <div class="entry-card-body">
@@ -258,27 +263,31 @@ function renderWorkEditor() {
         </div>
         <div class="fg"><label>Description</label><textarea placeholder="Key responsibilities and achievements..." oninput="state.work[${i}].desc=this.value;update()">${w.desc}</textarea></div>
       </div>
-    </div>`).join('');
+    </div>`,
+    )
+    .join("");
 }
 
 function addEdu() {
   const id = uid();
-  state.edu.push({ id, degree: '', school: '', from: '', to: '', gpa: '' });
+  state.edu.push({ id, degree: "", school: "", from: "", to: "", gpa: "" });
   renderEduEditor();
   update();
 }
 
 function removeEdu(id) {
-  state.edu = state.edu.filter(e => e.id !== id);
+  state.edu = state.edu.filter((e) => e.id !== id);
   renderEduEditor();
   update();
 }
 
 function renderEduEditor() {
-  $('edu-editor').innerHTML = state.edu.map((e, i) => `
+  $("edu-editor").innerHTML = state.edu
+    .map(
+      (e, i) => `
     <div class="entry-card">
       <div class="entry-card-head">
-        <span class="entry-card-title">${e.degree || 'Education ' + (i + 1)}</span>
+        <span class="entry-card-title">${e.degree || "Education " + (i + 1)}</span>
         <button class="entry-card-del" onclick="removeEdu('${e.id}')"><i class="ti ti-trash"></i></button>
       </div>
       <div class="entry-card-body">
@@ -295,13 +304,13 @@ function renderEduEditor() {
 
 function addSkill() {
   const id = uid();
-  state.skills.push({ id, name: '', level: 75 });
+  state.skills.push({ id, name: "", level: 75 });
   renderSkillsEditor();
   update();
 }
 
 function removeSkill(id) {
-  state.skills = state.skills.filter(s => s.id !== id);
+  state.skills = state.skills.filter((s) => s.id !== id);
   renderSkillsEditor();
   update();
 }
@@ -310,7 +319,7 @@ function renderSkillsEditor() {
   $('skills-editor').innerHTML = state.skills.map((s, i) => `
     <div class="entry-card">
       <div class="entry-card-head">
-        <span class="entry-card-title">${s.name || 'Skill ' + (i + 1)}</span>
+        <span class="entry-card-title">${s.name || "Skill " + (i + 1)}</span>
         <button class="entry-card-del" onclick="removeSkill('${s.id}')"><i class="ti ti-trash"></i></button>
       </div>
       <div class="entry-card-body">
@@ -325,7 +334,7 @@ function renderSkillsEditor() {
 }
 
 function addHobby() {
-  state.hobbies.push('');
+  state.hobbies.push("");
   renderHobbiesEditor();
   update();
 }
@@ -337,56 +346,76 @@ function removeHobby(i) {
 }
 
 function renderHobbiesEditor() {
-  $('hobbies-editor').innerHTML = state.hobbies.map((h, i) => `
+  $("hobbies-editor").innerHTML = state.hobbies
+    .map(
+      (h, i) => `
     <div style="display:flex;align-items:center;gap:5px;margin-bottom:5px">
       <input class="fg" style="flex:1;padding:5px 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);font-family:var(--font);font-size:12px" value="${h}" placeholder="e.g. Cricket, Reading" oninput="state.hobbies[${i}]=this.value;update()" />
       <button class="entry-card-del" onclick="removeHobby(${i})"><i class="ti ti-x"></i></button>
-    </div>`).join('');
+    </div>`,
+    )
+    .join("");
 }
 
 const SECTION_PRESETS = {
-  languages: 'Languages',
-  certifications: 'Certifications',
-  projects: 'Projects',
-  awards: 'Awards',
-  volunteering: 'Volunteering',
-  references: 'References',
-  custom: 'Custom Section',
+  languages: "Languages",
+  certifications: "Certifications",
+  projects: "Projects",
+  awards: "Awards",
+  volunteering: "Volunteering",
+  references: "References",
+  custom: "Custom Section",
 };
 
 function addSection(type) {
   const id = uid();
-  state.customSections.push({ id, title: SECTION_PRESETS[type] || type, items: [] });
+  state.customSections.push({
+    id,
+    title: SECTION_PRESETS[type] || type,
+    items: [],
+  });
   renderCustomSectionsEditor();
   update();
 }
 
 function addSectionItem(secIdx) {
-  state.customSections[secIdx].items.push({ id: uid(), title: '', subtitle: '', date: '', desc: '' });
+  state.customSections[secIdx].items.push({
+    id: uid(),
+    title: "",
+    subtitle: "",
+    date: "",
+    desc: "",
+  });
   renderCustomSectionsEditor();
   update();
 }
 
 function removeSectionItem(secIdx, itemId) {
-  state.customSections[secIdx].items = state.customSections[secIdx].items.filter(it => it.id !== itemId);
+  state.customSections[secIdx].items = state.customSections[
+    secIdx
+  ].items.filter((it) => it.id !== itemId);
   renderCustomSectionsEditor();
   update();
 }
 
 function removeSection(id) {
-  state.customSections = state.customSections.filter(s => s.id !== id);
+  state.customSections = state.customSections.filter((s) => s.id !== id);
   renderCustomSectionsEditor();
   update();
 }
 
 function renderCustomSectionsEditor() {
-  $('custom-sections-editor').innerHTML = state.customSections.map((sec, si) => `
+  $("custom-sections-editor").innerHTML = state.customSections
+    .map(
+      (sec, si) => `
     <div class="entry-card" style="margin-bottom:10px">
       <div class="entry-card-head">
         <input value="${sec.title}" style="font-weight:600;font-size:12px;border:none;background:transparent;color:var(--text);flex:1;outline:none;font-family:var(--font)" oninput="state.customSections[${si}].title=this.value;update()" />
         <button class="entry-card-del" onclick="removeSection('${sec.id}')"><i class="ti ti-trash"></i></button>
       </div>
-      ${sec.items.map((it, ii) => `
+      ${sec.items
+        .map(
+          (it, ii) => `
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px;margin-bottom:5px">
           <div style="display:flex;justify-content:flex-end;margin-bottom:4px">
             <button class="entry-card-del" onclick="removeSectionItem(${si},'${it.id}')"><i class="ti ti-x"></i></button>
@@ -401,33 +430,41 @@ function renderCustomSectionsEditor() {
 }
 
 function toggleTemplatesGrid(show) {
-  const overlay = $('templates-overlay');
+  const overlay = $("templates-overlay");
   if (show === true) {
-    overlay.classList.add('visible');
+    overlay.classList.add("visible");
     renderTemplateGrid();
   } else {
-    overlay.classList.remove('visible');
+    overlay.classList.remove("visible");
   }
 }
 
 function renderTemplateGrid() {
   const registry = window.TEMPLATE_REGISTRY;
   if (!registry || !registry.length) {
-    $('template-grid').innerHTML = '<p style="color:var(--text-muted);padding:20px">Templates failed to load. Check that all template scripts are in the templates/ folder.</p>';
+    $("template-grid").innerHTML =
+      '<p style="color:var(--text-muted);padding:20px">Templates failed to load. Check that all template scripts are in the templates/ folder.</p>';
     return;
   }
-  $('template-grid').innerHTML = registry.map(tpl => `
-    <div class="tpl-card ${state.activeTemplate === tpl.id ? 'active' : ''}" onclick="selectTemplate('${tpl.id}')">
+  $("template-grid").innerHTML = registry
+    .map(
+      (tpl) => `
+    <div class="tpl-card ${state.activeTemplate === tpl.id ? "active" : ""}" onclick="selectTemplate('${tpl.id}')">
       <span class="tpl-active-badge">✓ Active</span>
       <div class="tpl-thumb" style="background:${tpl.thumb_bg}">
-        <span style="font-size:22px;font-weight:900;color:${tpl.thumb_accent};text-shadow:0 2px 8px rgba(0,0,0,0.2)">${tpl.name.split(' ').map(w => w[0]).join('')}</span>
+        <span style="font-size:22px;font-weight:900;color:${tpl.thumb_accent};text-shadow:0 2px 8px rgba(0,0,0,0.2)">${tpl.name
+          .split(" ")
+          .map((w) => w[0])
+          .join("")}</span>
         <span class="tpl-thumb-label">${tpl.tag}</span>
       </div>
       <div class="tpl-info">
         <div class="tpl-name">${tpl.name}</div>
         <div class="tpl-desc">${tpl.description}</div>
       </div>
-    </div>`).join('');
+    </div>`,
+    )
+    .join("");
 }
 
 function selectTemplate(id) {
@@ -437,127 +474,147 @@ function selectTemplate(id) {
 }
 
 async function downloadPDF() {
-  const el = $('resumeEl');
+  const el = $("resumeEl");
 
-  await Promise.all([...el.querySelectorAll('img')].map(img => {
-    if (img.complete && img.naturalWidth > 0) return Promise.resolve();
-    return new Promise(resolve => { img.onload = resolve; img.onerror = resolve; });
-  }));
+  await Promise.all(
+    [...el.querySelectorAll("img")].map((img) => {
+      if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+      return new Promise((resolve) => {
+        img.onload = resolve;
+        img.onerror = resolve;
+      });
+    }),
+  );
 
   const prevTransform = el.style.transform;
-  el.style.transform = 'none';
+  el.style.transform = "none";
 
   const { jsPDF } = window.jspdf;
   const canvas = await html2canvas(el, {
     scale: 2,
     useCORS: true,
     logging: false,
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
   });
 
   el.style.transform = prevTransform;
 
-  const imgData = canvas.toDataURL('image/png');
-  const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const imgData = canvas.toDataURL("image/png");
+  const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
   const pageW = pdf.internal.pageSize.getWidth();
   const pageH = pdf.internal.pageSize.getHeight();
   const imgH = (canvas.height * pageW) / canvas.width;
 
   if (imgH <= pageH) {
-    pdf.addImage(imgData, 'PNG', 0, 0, pageW, imgH);
+    pdf.addImage(imgData, "PNG", 0, 0, pageW, imgH);
   } else {
     const fullPages = Math.floor(imgH / pageH);
     const remainder = imgH - fullPages * pageH;
     const pageCount = remainder > 3 ? fullPages + 1 : fullPages;
     for (let i = 0; i < pageCount; i++) {
       if (i > 0) pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 0, -(pageH * i), pageW, imgH);
+      pdf.addImage(imgData, "PNG", 0, -(pageH * i), pageW, imgH);
     }
   }
 
-  const name = (val('fn') + '_' + val('ln')).replace(/\s+/g, '_') || 'Resume';
+  const name = (val("fn") + "_" + val("ln")).replace(/\s+/g, "_") || "Resume";
   pdf.save(`${name}_Resume.pdf`);
 }
 
 function fitResumePreview() {
-  const wrap = $('resumeScaleWrap');
-  const resume = $('resumeEl');
-  const preview = $('previewArea');
+  const wrap = $("resumeScaleWrap");
+  const resume = $("resumeEl");
+  const preview = $("previewArea");
   if (!wrap || !resume || !preview) return;
 
-  resume.style.transform = 'none';
-  wrap.style.height = 'auto';
+  resume.style.transform = "none";
+  wrap.style.height = "auto";
 
   const resumeW = resume.offsetWidth;
   const resumeH = resume.offsetHeight;
   const maxW = preview.clientWidth - 32;
   const scale = Math.min(1, maxW / resumeW);
 
-  resume.style.transform = scale < 1 ? `scale(${scale})` : 'none';
-  wrap.style.height = scale < 1 ? `${resumeH * scale}px` : 'auto';
+  resume.style.transform = scale < 1 ? `scale(${scale})` : "none";
+  wrap.style.height = scale < 1 ? `${resumeH * scale}px` : "auto";
 }
 
 function initResponsive() {
   fitResumePreview();
-  window.addEventListener('resize', fitResumePreview);
-  if (window.matchMedia('(max-width: 900px)').matches) {
-    $('editorSidebar')?.classList.add('hidden');
-    $('sidebarToggleWrap')?.classList.add('collapsed');
+  window.addEventListener("resize", fitResumePreview);
+  if (window.matchMedia("(max-width: 900px)").matches) {
+    $("editorSidebar")?.classList.add("hidden");
+    $("sidebarToggleWrap")?.classList.add("collapsed");
   }
 }
 
 function initDarkMode() {
-  document.body.classList.add('dark');
-  $('darkModeIcon').className = 'fa-solid fa-moon';
-  $('darkModeText').textContent = 'Light mode';
+  document.body.classList.add("dark");
+  $("darkModeIcon").className = "fa-solid fa-moon";
+  $("darkModeText").textContent = "Light mode";
 }
 
 function initScrollableRanges() {
-  document.addEventListener('wheel', (e) => {
-    const input = e.target.closest('input[type="range"]');
-    if (!input || input.disabled) return;
+  document.addEventListener(
+    "wheel",
+    (e) => {
+      const input = e.target.closest('input[type="range"]');
+      if (!input || input.disabled) return;
 
-    e.preventDefault();
+      e.preventDefault();
 
-    const min = parseFloat(input.min) || 0;
-    const max = parseFloat(input.max) || 100;
-    const step = parseFloat(input.step) || 1;
-    const direction = e.deltaY < 0 ? 1 : -1;
-    const next = Math.min(max, Math.max(min, parseFloat(input.value) + step * direction));
+      const min = parseFloat(input.min) || 0;
+      const max = parseFloat(input.max) || 100;
+      const step = parseFloat(input.step) || 1;
+      const direction = e.deltaY < 0 ? 1 : -1;
+      const next = Math.min(
+        max,
+        Math.max(min, parseFloat(input.value) + step * direction),
+      );
 
-    if (next !== parseFloat(input.value)) {
-      input.value = next;
-      input.dispatchEvent(new Event('input', { bubbles: true }));
-    }
-  }, { passive: false });
+      if (next !== parseFloat(input.value)) {
+        input.value = next;
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+    },
+    { passive: false },
+  );
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener("DOMContentLoaded", () => {
+  // Setup UI autosave wrapper first so subsequent updates persist.
+  wireUpdateAutosave();
+
   initScrollableRanges();
   initPhotoThumbDrag();
-  testSupabaseSave(); //supabase test function.
   initPhotoTouch();
   initDarkMode();
   initResponsive();
+
+  // If opening ?id=..., load that resume; otherwise start with blank resume.
+  initFromUrlIfAny();
+
+  // Ensure initial editor sections exist (loadResume will re-render anyway).
   addWork();
   addEdu();
   addSkill();
 
   setTimeout(() => {
     const w = state.work[0];
-    w.role = 'Salesforce Developer';
-    w.company = 'Acme Solutions';
-    w.from = 'Jan 2021';
-    w.to = 'Present';
-    w.desc = 'Developed custom Apex triggers, LWC components, and integrated third-party APIs on Salesforce Service Cloud.';
+    w.role = "Salesforce Developer";
+    w.company = "Acme Solutions";
+    w.from = "Jan 2021";
+    w.to = "Present";
+    w.desc =
+      "Developed custom Apex triggers, LWC components, and integrated third-party APIs on Salesforce Service Cloud.";
     const e = state.edu[0];
-    e.degree = 'B.Tech Computer Science';
-    e.school = 'ABC University';
-    e.from = '2017';
-    e.to = '2021';
-    e.gpa = '8.2/10';
+    e.degree = "B.Tech Computer Science";
+    e.school = "ABC University";
+    e.from = "2017";
+    e.to = "2021";
+    e.gpa = "8.2/10";
     const s = state.skills[0];
-    s.name = 'Apex / LWC';
+    s.name = "Apex / LWC";
     s.level = 88;
     renderWorkEditor();
     renderEduEditor();
@@ -569,7 +626,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 /* Added functionality to pich zoom and move image by finger on smart phones */
 function initPhotoTouch() {
-  const frame = $('photoThumbFrame');
+  const frame = $("photoThumbFrame");
 
   if (!frame) return;
   let startX = 0;
@@ -582,76 +639,276 @@ function initPhotoTouch() {
   let startDistance = 0;
 
   function getDistance(t1, t2) {
-    return Math.hypot(
-      t2.clientX - t1.clientX,
-      t2.clientY - t1.clientY
-    );
+    return Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
   }
 
-  frame.addEventListener('touchstart', (e) => {
-    if (!state.photo) return;
-    if (e.touches.length === 1) {
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-      startOffsetX = state.photoOffsetX;
-      startOffsetY = state.photoOffsetY;
-    }
-    if (e.touches.length === 2) {
-      startDistance = getDistance(
-        e.touches[0],
-        e.touches[1]
-      );
-      startZoom = state.photoZoom;
-    }
-  }, { passive: false });
-  frame.addEventListener('touchmove', (e) => {
-    if (!state.photo) return;
-    e.preventDefault();
-    if (e.touches.length === 1) {
-      applyPhotoOffset(
-        startOffsetX + (e.touches[0].clientX - startX),
-        startOffsetY + (e.touches[0].clientY - startY),
-        false
-      );
-    }
-    if (e.touches.length === 2) {
-      const currentDistance = getDistance(
-        e.touches[0],
-        e.touches[1]
-      );
-      state.photoZoom =
-        startZoom *
-        (currentDistance / startDistance);
-      state.photoZoom = Math.max(
-        50,
-        Math.min(300, state.photoZoom)
-      );
-      $('photoZoom').value = Math.round(state.photoZoom);
-      $('photoZoomVal').textContent =
-        Math.round(state.photoZoom) + '%';
-      syncPhotoThumbPreview();
-    }
-
-  }, { passive: false });
-  frame.addEventListener('touchend', () => {
+  frame.addEventListener(
+    "touchstart",
+    (e) => {
+      if (!state.photo) return;
+      if (e.touches.length === 1) {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        startOffsetX = state.photoOffsetX;
+        startOffsetY = state.photoOffsetY;
+      }
+      if (e.touches.length === 2) {
+        startDistance = getDistance(e.touches[0], e.touches[1]);
+        startZoom = state.photoZoom;
+      }
+    },
+    { passive: false },
+  );
+  frame.addEventListener(
+    "touchmove",
+    (e) => {
+      if (!state.photo) return;
+      e.preventDefault();
+      if (e.touches.length === 1) {
+        applyPhotoOffset(
+          startOffsetX + (e.touches[0].clientX - startX),
+          startOffsetY + (e.touches[0].clientY - startY),
+          false,
+        );
+      }
+      if (e.touches.length === 2) {
+        const currentDistance = getDistance(e.touches[0], e.touches[1]);
+        state.photoZoom = startZoom * (currentDistance / startDistance);
+        state.photoZoom = Math.max(50, Math.min(300, state.photoZoom));
+        $("photoZoom").value = Math.round(state.photoZoom);
+        $("photoZoomVal").textContent = Math.round(state.photoZoom) + "%";
+        syncPhotoThumbPreview();
+      }
+    },
+    { passive: false },
+  );
+  frame.addEventListener("touchend", () => {
     update();
   });
 }
 
-async function testSupabaseSave() {
-
-  const { data, error } =
-    await supabaseClient
-      .from('resumes')
-      .insert([
-        {
-          id: crypto.randomUUID(),
-          data: {
-            message: 'Hello Supabase'
-          }
-        }
-      ]);
-
-  console.log('DATA655:', data);
-  console.log('ERROR656:', error);
+function getResumeIdFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  return id ? id.trim() : null;
 }
+
+function setInputsFromData(data) {
+  isApplyingRemoteData = true;
+  try {
+    const profile = data?.profile || {};
+    const personal = data?.personal || {};
+
+    // Simple text inputs
+    $("fn").value = profile.firstName ?? "";
+    $("ln").value = profile.lastName ?? "";
+    $("tagline").value = profile.tagline ?? "";
+    $("phone").value = profile.phone ?? "";
+    $("email").value = profile.email ?? "";
+    $("website").value = profile.website ?? "";
+    $("github").value = profile.github ?? "";
+    $("portfolio").value = profile.portfolio ?? "";
+    $("summary").value = profile.summary ?? "";
+
+    $("father").value = personal.father ?? "";
+    $("dob").value = personal.dob ?? "";
+    $("gender").value = personal.gender ?? "";
+    $("lang").value = personal.lang ?? "";
+    $("marital").value = personal.marital ?? "";
+    $("nation").value = personal.nation ?? "";
+    $("decl").value = personal.decl ?? "";
+
+    // Arrays
+    state.work = (data?.work || []).map((w) => ({
+      id: w.id || uid(),
+      role: w.role || "",
+      company: w.company || "",
+      from: w.from || "",
+      to: w.to || "",
+      desc: w.desc || "",
+    }));
+
+    state.edu = (data?.edu || []).map((e) => ({
+      id: e.id || uid(),
+      degree: e.degree || "",
+      school: e.school || "",
+      from: e.from || "",
+      to: e.to || "",
+      gpa: e.gpa || "",
+    }));
+
+    state.skills = (data?.skills || []).map((s) => ({
+      id: s.id || uid(),
+      name: s.name || "",
+      level: typeof s.level === "number" ? s.level : +s.level || 75,
+    }));
+
+    state.hobbies = data?.hobbies || [];
+
+    state.customSections = (data?.customSections || []).map((sec) => ({
+      id: sec.id || uid(),
+      title: sec.title || "Custom Section",
+      items: (sec.items || []).map((it) => ({
+        id: it.id || uid(),
+        title: it.title || "",
+        subtitle: it.subtitle || "",
+        date: it.date || "",
+        desc: it.desc || "",
+      })),
+    }));
+
+    // Photo
+    state.photo = profile.photoSrc ?? null;
+    state.photoSize = profile.photoSize ?? 78;
+    state.photoZoom = profile.photoZoom ?? 100;
+    state.photoOffsetX = profile.photoOffsetX ?? 0;
+    state.photoOffsetY = profile.photoOffsetY ?? 0;
+
+    const photoThumb = $("photoThumb");
+    if (state.photo) {
+      photoThumb.src = state.photo;
+      $("photoBox").style.display = "none";
+      $("photoControls").style.display = "block";
+      $("photoSize").value = state.photoSize;
+      $("photoSizeVal").textContent = state.photoSize + "px";
+      $("photoZoom").value = state.photoZoom;
+      $("photoZoomVal").textContent = state.photoZoom + "%";
+      $("photoOffsetX").value = state.photoOffsetX;
+      $("photoOffsetXVal").textContent = state.photoOffsetX;
+      $("photoOffsetY").value = state.photoOffsetY;
+      $("photoOffsetYVal").textContent = state.photoOffsetY;
+      syncPhotoThumbPreview();
+    } else {
+      photoThumb.src = "";
+      $("photoBox").style.display = "flex";
+      $("photoControls").style.display = "none";
+    }
+
+    // Editors
+    renderWorkEditor();
+    renderEduEditor();
+    renderSkillsEditor();
+    renderHobbiesEditor();
+    renderCustomSectionsEditor();
+
+    // If arrays are empty, ensure at least one card exists like current init.
+    if (state.work.length === 0) addWork();
+    if (state.edu.length === 0) addEdu();
+    if (state.skills.length === 0) addSkill();
+  } finally {
+    isApplyingRemoteData = false;
+  }
+}
+
+async function loadResumeById(id) {
+  const { data, error } = await supabaseClient
+    .from("resumes")
+    .select("id,data,created_at")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Failed to load resume:", error);
+    return;
+  }
+  if (!data) {
+    console.warn("No resume found for id:", id);
+    return;
+  }
+
+  currentResumeId = data.id;
+  setInputsFromData(data.data || {});
+  // Keep template default; if you also store activeTemplate, load it here.
+  update();
+}
+
+async function upsertResume() {
+  if (isApplyingRemoteData) return;
+
+  // Generate new UUID on first save
+  if (!currentResumeId) {
+    currentResumeId = crypto.randomUUID();
+    // Update URL so user can share/edit.
+    const url = new URL(window.location.href);
+    url.searchParams.set("id", currentResumeId);
+    console.log("url848:: ", url);
+    window.history.replaceState({}, "", url);
+    console.log("url850:: ", url);
+  }
+
+  const payload = collectData();
+
+  // Debug logging so you can verify when/what is being saved.
+  // NOTE: photoSrc can be huge; we replace it with a placeholder.
+  try {
+    const debugPayload = JSON.parse(JSON.stringify(payload));
+    if (debugPayload?.profile) {
+      debugPayload.profile.photoSrc = debugPayload.profile.photoSrc
+        ? "[photo-data]"
+        : null;
+    }
+
+    console.log("[Supabase Save]", {
+      id: currentResumeId,
+      workCount: debugPayload?.work?.length || 0,
+      eduCount: debugPayload?.edu?.length || 0,
+      skillsCount: debugPayload?.skills?.length || 0,
+      hobbiesCount: debugPayload?.hobbies?.length || 0,
+      customSectionsCount: debugPayload?.customSections?.length || 0,
+      profile: debugPayload?.profile,
+      payload: debugPayload,
+    });
+  } catch (e) {
+    console.log("[Supabase Save]", {
+      id: currentResumeId,
+      payload,
+    });
+  }
+
+  const { data, error } = await supabaseClient
+    .from("resumes")
+    .upsert(
+      {
+        id: currentResumeId,
+        data: payload,
+        created_at: new Date().toISOString(),
+      },
+      { onConflict: "id" },
+    )
+    .select();
+
+  if (error) {
+    console.error("Failed to save resume:", error);
+  } else {
+    console.log("[Supabase Save OK]", { id: currentResumeId });
+  }
+}
+
+function scheduleAutosave() {
+  // Autosave disabled (Save button commits to Supabase only)
+  if (autosaveTimer) clearTimeout(autosaveTimer);
+}
+
+function wireUpdateAutosave() {
+  // Disable autosave behavior; we now save only via explicit Save button.
+  // Keeping this wrapper so existing code keeps calling update() normally.
+  const originalUpdate = update;
+  update = function () {
+    originalUpdate();
+  };
+}
+
+async function saveResume() {
+  await upsertResume();
+}
+
+function initFromUrlIfAny() {
+  const id = getResumeIdFromUrl();
+  if (id) {
+    // Defer until DOM + templates loaded.
+    loadResumeById(id).catch(console.error);
+  }
+}
+
+// Expose to global for onclick handlers
+window.saveResume = saveResume;
