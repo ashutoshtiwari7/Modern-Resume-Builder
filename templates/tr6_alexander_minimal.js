@@ -108,7 +108,7 @@ window.ResumeTemplates.tr6_alexander_minimal = {
         <!-- CENTERED PLAIN HEADER -->
         <div style="text-align:center;margin-bottom:14px">
           <div style="font-size:35px;font-weight:700;color:#1a1a1a">${p.firstName || ''} ${p.lastName || ''}</div>
-          ${p.tagline ? `<div style="font-size:13px;color:#555;margin-top:3px">${p.tagline}</div>` : ''}
+          ${p.tagline ? `<div style="font-size:24px;color:#555;margin-top:3px">${p.tagline}</div>` : ''}
           <div style="font-size:13px;color:#444;margin-top:6px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
             ${p.phone ? `<span>${p.phone}</span>` : ''}
             ${p.phone && p.email ? '<span>•</span>' : ''}

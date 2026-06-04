@@ -122,7 +122,7 @@ window.ResumeTemplates.tr7_brad_twocol = {
             ${p.photoSrc ? `<div style="width:60px;height:60px;border-radius:50%;overflow:hidden;position:relative;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#eee">${photoHTML}</div>` : ''}
             <div>
               <div style="font-size:38px;font-weight:900;color:#1a1a1a;letter-spacing:-0.5px;text-transform:uppercase;line-height:1.05">${p.firstName || ''} ${p.lastName || ''}</div>
-              ${p.tagline ? `<div style="font-size:13px;color:${accent};font-weight:600;margin-top:3px">${p.tagline}</div>` : ''}
+              ${p.tagline ? `<div style="font-size:22px;color:${accent};font-weight:600;margin-top:3px">${p.tagline}</div>` : ''}
               <div style="display:flex;gap:12px;margin-top:5px;font-size:13px;color:#444;flex-wrap:wrap">
                 ${p.phone ? `<span>📞 ${p.phone}</span>` : ''}
                 ${p.email ? `<span>✉ ${p.email}</span>` : ''}

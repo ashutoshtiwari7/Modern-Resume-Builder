@@ -113,7 +113,7 @@ window.ResumeTemplates.tr3_olivia_centered = {
         <div style="text-align:center;margin-bottom:14px">
           ${p.photoSrc ? `<div style="display:flex;justify-content:center;margin-bottom:8px"><div style="width:64px;height:64px;border-radius:50%;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center">${photoHTML}</div></div>` : ''}
           <div style="font-size:33px;font-weight:700;color:#1a1a1a">${p.firstName || ''} ${p.lastName || ''}</div>
-          ${p.tagline ? `<div style="font-size:14px;color:${accent};margin-top:3px">${p.tagline}</div>` : ''}
+          ${p.tagline ? `<div style="font-size:22px;color:${accent};margin-top:3px">${p.tagline}</div>` : ''}
           <div style="font-size:13px;color:#444;margin-top:6px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
             ${p.phone ? `<span>${p.phone}</span>` : ''}
             ${p.phone && p.email ? '<span>•</span>' : ''}

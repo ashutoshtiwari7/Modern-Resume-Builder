@@ -67,7 +67,7 @@ window.ResumeTemplates.t6_compact_fresher = {
           </div>
           <div style="flex:1">
             <div style="font-size:31px;font-weight:700;color:#1a1a1a;letter-spacing:-0.5px;line-height:1.1">${profile.firstName||''} ${profile.lastName||''}</div>
-            ${profile.tagline?`<div style="font-size:13px;color:${accent};text-transform:uppercase;letter-spacing:1px;margin-top:2px">${profile.tagline}</div>`:''}
+            ${profile.tagline?`<div style="font-size:20px;color:${accent};text-transform:uppercase;letter-spacing:1px;margin-top:2px">${profile.tagline}</div>`:''}
           </div>
           <div style="text-align:right">
             ${profile.phone?`<div style="font-size:13px;color:#555">📞 ${profile.phone}</div>`:''}

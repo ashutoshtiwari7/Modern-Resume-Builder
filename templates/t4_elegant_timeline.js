@@ -36,7 +36,7 @@ window.ResumeTemplates.t4_elegant_timeline = {
         </div>
         <div style="flex:1;padding-bottom:8px">
           <div style="display:flex;justify-content:space-between">
-            <div style="font-weight:700;font-size:14px;color:#2d2d2d">${w.role||''}</div>
+            <div style="font-weight:700;font-size:22px;color:#2d2d2d">${w.role||''}</div>
             <div style="font-size:12px;color:#999;white-space:nowrap">${[w.from,w.to].filter(Boolean).join(' – ')}</div>
           </div>
           <div style="font-size:13px;color:${accent};font-style:italic;margin-bottom:3px">${w.company||''}</div>
@@ -85,7 +85,7 @@ window.ResumeTemplates.t4_elegant_timeline = {
             </div>
           </div>
           <div style="font-size:42px;font-weight:300;color:#1a1a1a;letter-spacing:3px;text-transform:uppercase">${profile.firstName||''} <strong style="font-weight:800">${profile.lastName||''}</strong></div>
-          ${profile.tagline?`<div style="font-size:14px;color:${accent};text-transform:uppercase;letter-spacing:2px;margin-top:5px">${profile.tagline}</div>`:''}
+          ${profile.tagline?`<div style="font-size:22px;color:${accent};text-transform:uppercase;letter-spacing:2px;margin-top:5px">${profile.tagline}</div>`:''}
           <div style="display:flex;justify-content:center;gap:16px;margin-top:8px;flex-wrap:wrap">
             ${profile.phone?`<span style="font-size:13px;color:#888">📞 ${profile.phone}</span>`:''}
             ${profile.email?`<span style="font-size:13px;color:#888">✉ ${profile.email}</span>`:''}

@@ -66,7 +66,7 @@ window.ResumeTemplates.t3_executive_bold = {
           <!-- Header band -->
           <div style="background:#0f1923;padding:28px 24px 20px">
             <div style="font-size:45px;font-weight:900;color:#fff;letter-spacing:-1px;line-height:1.1;text-transform:uppercase">${profile.firstName||''} <span style="color:${accent}">${profile.lastName||''}</span></div>
-            ${profile.tagline?`<div style="font-size:14px;color:#aaa;text-transform:uppercase;letter-spacing:2.5px;margin-top:5px">${profile.tagline}</div>`:''}
+            ${profile.tagline?`<div style="font-size:20px;color:#aaa;text-transform:uppercase;letter-spacing:2.5px;margin-top:5px">${profile.tagline}</div>`:''}
             <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
               ${profile.phone?`<span style="font-size:13px;color:#888">📞 ${profile.phone}</span>`:''}
               ${profile.email?`<span style="font-size:13px;color:#888">✉ ${profile.email}</span>`:''}

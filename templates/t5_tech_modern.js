@@ -71,7 +71,7 @@ window.ResumeTemplates.t5_tech_modern = {
           </div>
           <div>
             <div style="font-size:35px;font-weight:700;color:#e6edf3;letter-spacing:-0.5px">${profile.firstName||''} ${profile.lastName||''}</div>
-            ${profile.tagline?`<div style="font-size:13px;color:${accent};font-family:monospace;margin-top:3px">// ${profile.tagline}</div>`:''}
+            ${profile.tagline?`<div style="font-size:22px;color:${accent};font-family:monospace;margin-top:3px">// ${profile.tagline}</div>`:''}
             <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap">
               ${profile.phone?`<span style="font-size:12px;color:#8b949e;background:#21262d;padding:2px 7px;border-radius:3px">📞 ${profile.phone}</span>`:''}
               ${profile.email?`<span style="font-size:12px;color:#8b949e;background:#21262d;padding:2px 7px;border-radius:3px">✉ ${profile.email}</span>`:''}

@@ -76,7 +76,7 @@ window.ResumeTemplates.tr1_emily_classic = {
           <!-- Name + title -->
           <div style="flex:1">
             <div style="font-size:38px;font-weight:900;color:#1a1a1a;letter-spacing:-0.5px;text-transform:uppercase;line-height:1.05">${p.firstName || ''} ${p.lastName || ''}</div>
-            ${p.tagline ? `<div style="font-size:13px;color:${accentOrange};font-weight:600;margin-top:4px;line-height:1.4">${p.tagline}</div>` : ''}
+            ${p.tagline ? `<div style="font-size:22px;color:${accentOrange};font-weight:600;margin-top:4px;line-height:1.4">${p.tagline}</div>` : ''}
           </div>
           <!-- Divider -->
           <div style="width:1.5px;height:56px;background:#ccc;flex-shrink:0"></div>

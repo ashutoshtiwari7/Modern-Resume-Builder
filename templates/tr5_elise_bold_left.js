@@ -97,7 +97,7 @@ window.ResumeTemplates.tr5_elise_bold_left = {
         <div style="margin-bottom:12px">
           ${p.photoSrc ? `<div style="float:right;margin-left:12px"><div style="width:60px;height:60px;border-radius:50%;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;background:#eee">${photoHTML}</div></div>` : ''}
           <div style="font-size:45px;font-weight:900;color:#1a1a1a;letter-spacing:-0.5px;text-transform:uppercase;line-height:1.05">${p.firstName || ''} ${p.lastName || ''}</div>
-          ${p.tagline ? `<div style="font-size:13px;color:${accent};font-weight:600;margin-top:4px;text-decoration:underline;text-decoration-color:${accent}">${p.tagline}</div>` : ''}
+          ${p.tagline ? `<div style="font-size:22px;color:${accent};font-weight:600;margin-top:4px;text-decoration:underline;text-decoration-color:${accent}">${p.tagline}</div>` : ''}
           <div style="clear:both"></div>
           <!-- Icon contacts -->
           <div style="display:flex;gap:14px;margin-top:6px;flex-wrap:wrap">

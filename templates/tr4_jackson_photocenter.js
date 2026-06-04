@@ -106,7 +106,7 @@ window.ResumeTemplates.tr4_jackson_photocenter = {
             </div>
           </div>
           <div style="font-size:33px;font-weight:700;color:#1a1a1a">${p.firstName || ''} ${p.lastName || ''}</div>
-          ${p.tagline ? `<div style="font-size:14px;color:${accent};margin-top:3px">${p.tagline}</div>` : ''}
+          ${p.tagline ? `<div style="font-size:22px;color:${accent};margin-top:3px">${p.tagline}</div>` : ''}
           <div style="font-size:13px;color:#444;margin-top:6px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
             ${p.phone ? `<span>${p.phone}</span>` : ''}
             ${p.phone && p.email ? '<span>•</span>' : ''}

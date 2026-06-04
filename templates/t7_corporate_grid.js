@@ -78,7 +78,7 @@ window.ResumeTemplates.t7_corporate_grid = {
           </div>
           <div style="flex:1">
             <div style="font-size:38px;font-weight:800;color:#111827;letter-spacing:-0.5px">${profile.firstName||''} ${profile.lastName||''}</div>
-            ${profile.tagline?`<div style="font-size:14px;color:${accent};font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:3px">${profile.tagline}</div>`:''}
+            ${profile.tagline?`<div style="font-size:20px;color:${accent};font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:3px">${profile.tagline}</div>`:''}
           </div>
           <div style="text-align:right;display:flex;flex-direction:column;gap:4px">
             ${profile.phone?`<div style="font-size:13px;color:#6b7280">📞 ${profile.phone}</div>`:''}
